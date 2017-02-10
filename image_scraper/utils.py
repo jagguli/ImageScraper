@@ -9,8 +9,14 @@ from past.utils import old_div
 import os
 import argparse
 import re
-from .exceptions import PageLoadError, DirectoryAccessError,\
-                        DirectoryCreateError, ImageDownloadError, ImageSizeError
+from .exceptions import (
+    PageLoadError,
+    DirectoryAccessError,
+    DirectoryCreateError,
+    ImageDownloadError,
+    ImageSizeError,
+)
+from urlparse import urlparse
 
 
 class ImageScraper(object):
@@ -205,7 +211,9 @@ class ImageScraper(object):
         """ Function to process the list of links and filter required links."""
         links_list = []
         for link in links:
-            if os.path.splitext(link)[1][1:].strip().lower() in self.format_list:
+            if os.path.splitext(
+                    urlparse(link).path
+                    )[1][1:].strip().lower() in self.format_list:
                 links_list.append(link)
         return links_list
 
